@@ -37,6 +37,11 @@ source "$TARGETDIR/venv/bin/activate"
 echo "*** Installing Python dependencies..."
 pip3 install -r requirements.txt
 
+mkdir -p $TARGETDIR/tmp || true
+git clone https://github.com/bastienleonard/pysensors.git $TARGETDIR/tmp
+python3 -m pip install $TARGETDIR/tmp/ #build_ext --inplace
+
+
 echo "*** Deactivating Python3 virtualenv..."
 deactivate
 
@@ -47,17 +52,17 @@ fi
 cp fan_control.yaml "$TARGETDIR/"
 cp fan_control.py "$TARGETDIR/"
 
-echo "*** Creating, (re)starting and enabling SystemD service..."
-cp fan-control.service /etc/systemd/system/fan-control.service
-sed -i "s#{TARGETDIR}#$TARGETDIR#g" /etc/systemd/system/fan-control.service
-systemctl daemon-reload
-systemctl restart fan-control
-systemctl enable fan-control
+# echo "*** Creating, (re)starting and enabling SystemD service..."
+# cp fan-control.service /etc/systemd/system/fan-control.service
+# sed -i "s#{TARGETDIR}#$TARGETDIR#g" /etc/systemd/system/fan-control.service
+# systemctl daemon-reload
+# systemctl restart fan-control
+# systemctl enable fan-control
 
-echo "*** Waiting for the service to start..."
-sleep 3
+# echo "*** Waiting for the service to start..."
+# sleep 3
 
-echo -e "*** All done! Check the service's output below:\n"
-systemctl status fan-control
+# echo -e "*** All done! Check the service's output below:\n"
+# systemctl status fan-control
 
 set +e
