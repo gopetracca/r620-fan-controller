@@ -11,7 +11,8 @@ import time
 import signal
 
 config = {
-    'config_path': '/opt/fan_control/fan_control.yaml',
+    # 'config_path': '/opt/fan_control/fan_control.yaml',
+    'config_path': 'test/fan_control.yaml',
     'general': {
         'debug': False,
         'interval': 60
@@ -27,11 +28,11 @@ def ipmitool(args, host):
     global state
 
     cmd = ["ipmitool"]
-    if state[host['name']]['is_remote']:
-        cmd += ['-I', 'lanplus']
-        cmd += ['-H', host['remote_ipmi_credentials']['host']]
-        cmd += ['-U', host['remote_ipmi_credentials']['username']]
-        cmd += ['-P', host['remote_ipmi_credentials']['password']]
+    # if state[host['name']]['is_remote']:
+    cmd += ['-I', 'lanplus']
+    cmd += ['-H', host['remote_ipmi_credentials']['host']]
+    cmd += ['-U', host['remote_ipmi_credentials']['username']]
+    cmd += ['-P', host['remote_ipmi_credentials']['password']]
     cmd += (args.split(' '))
     if config['general']['debug']:
         print(re.sub(r'-([UP]) (\S+)', r'-\1 ___', ' '.join(cmd))) # Do not log IPMI credentials
@@ -109,7 +110,7 @@ def parse_config():
             if len(host['speeds']) != 3:
                 raise ConfigError('Host "{}" has {} fan speeds instead of 3.'.format(host['name'], len(host['speeds'])))
             if ('remote_temperature_command' in list(host.keys()) or 'remote_ipmi_credentials' in list(host.keys()))  and \
-                ('remote_temperature_command' not in list(host.keys()) or 'remote_ipmi_credentials' not in list(host.keys())):
+                ('remote_ipmi_credentials' not in list(host.keys())):
                 raise ConfigError('Host "{}" must specify either none or both "remote_temperature_command" and "remote_ipmi_credentials" keys.'.format(host['name']))
             if 'remote_ipmi_credentials' in list(host.keys()) and \
                 ('host' not in list(host['remote_ipmi_credentials'].keys()) or \
@@ -225,6 +226,7 @@ def main():
                 cmd.close()
 
             temp_average = round(sum(temps)/len(temps))
+            print("temp: ", temp_average)
             compute_fan_speed(temp_average, host)
 
         time.sleep(config['general']['interval'])

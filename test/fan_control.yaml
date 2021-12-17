@@ -1,0 +1,31 @@
+general:
+  debug: true
+  interval: 60
+
+hosts:
+  # - name: MyLocalHost
+  #   hysteresis: 3
+  #   temperatures:
+  #     - 32
+  #     - 37
+  #     - 55
+  #   speeds:
+  #     - 9
+  #     - 10
+  #     - 15
+
+  - name: MyRemoteHost
+    # remote_temperature_command: sensors
+    remote_ipmi_credentials:
+      host: 10.0.1.10
+      username: admin
+      password: RNDOM
+    hysteresis: 0
+    temperatures:
+      - 35
+      - 45
+      - 55
+    speeds:
+      - 7
+      - 10
+      - 15
