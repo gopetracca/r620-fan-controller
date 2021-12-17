@@ -1,31 +1,31 @@
 general:
-  debug: false
+  debug: true
   interval: 60
 
 hosts:
-  - name: MyLocalHost
-    hysteresis: 3
+  # - name: MyLocalHost
+  #   hysteresis: 3
+  #   temperatures:
+  #     - 32
+  #     - 37
+  #     - 55
+  #   speeds:
+  #     - 9
+  #     - 10
+  #     - 15
+
+  - name: MyRemoteHost
+    # remote_temperature_command: sensors
+    remote_ipmi_credentials:
+      host: 10.0.1.10
+      username: admin
+      password: RNDOM
+    hysteresis: 0
     temperatures:
-      - 32
-      - 37
+      - 35
+      - 45
       - 55
     speeds:
-      - 9
+      - 7
       - 10
       - 15
-
-  #- name: MyRemoteHost
-  #  remote_temperature_command: ssh myuser@myhost 'sysctl -a | grep -E "cpu\.[0-9]+\.temp" | grep -E -o "[0-9]+\.[0-9]+"' # must return a newline-delimited list of floats
-  #  remote_ipmi_credentials:
-  #    host: some.idrac.domain
-  #    username: idrac-user
-  #    password: idrac-password
-  #  hysteresis: 0
-  #  temperatures:
-  #    - 32
-  #    - 37
-  #    - 55
-  #  speeds:
-  #    - 9
-  #    - 10
-  #    - 15

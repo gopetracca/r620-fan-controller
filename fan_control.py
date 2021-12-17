@@ -11,8 +11,8 @@ import time
 import signal
 
 config = {
-    # 'config_path': '/opt/fan_control/fan_control.yaml',
-    'config_path': 'test/fan_control.yaml',
+    'config_path': '/opt/fan_control/fan_control.yaml',
+    # 'config_path': 'test/fan_control.yaml',
     'general': {
         'debug': False,
         'interval': 60
